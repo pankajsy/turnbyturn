@@ -77,8 +77,12 @@ import android.view.View;
 import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
-public class MainActivity extends AppCompatActivity
-        implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, PermissionsListener, LocationEngineListener, MapboxMap.OnMapClickListener{
+public class MainActivity extends AppCompatActivity implements
+                                                    OnMapReadyCallback,
+                                                    NavigationView.OnNavigationItemSelectedListener,
+                                                    PermissionsListener,
+                                                    LocationEngineListener,
+                                                    MapboxMap.OnMapClickListener{
     // variables for adding location layer
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -124,10 +128,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //  Mapbox mapview fragment settings
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+        //after mapview is ready
         mapView.getMapAsync(this);
 
     }
