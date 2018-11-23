@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 // classes needed to initialize map
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEnginePriority;
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     private Button button;
+    PlaceAutocompleteFragment autocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +141,32 @@ public class MainActivity extends AppCompatActivity implements
         //after mapview is ready
         mapView.getMapAsync(this);
 
+
+        if (savedInstanceState == null) {
+            autocompleteFragment = PlaceAutocompleteFragment.newInstance("<access_token>");
+
+            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment_container, autocompleteFragment,TAG);
+            transaction.commit();
+
+        } else {
+            autocompleteFragment = (PlaceAutocompleteFragment)
+                    getSupportFragmentManager().findFragmentByTag(TAG);
+        }
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(CarmenFeature carmenFeature) {
+                Toast.makeText(MainActivity.this,
+                        carmenFeature.text(), Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -285,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressWarnings( {"MissingPermission"})
     private void initializeLocationEngine() {
         LocationEngineProvider locationEngineProvider = new LocationEngineProvider(this);
         locationEngine = locationEngineProvider.obtainBestLocationEngineAvailable();
@@ -320,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressWarnings( {"MissingPermission"})
     @Override
     protected void onStart() {
         super.onStart();
