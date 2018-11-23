@@ -1,9 +1,12 @@
 package com.example.psy.turnbyturn;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,15 +17,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import java.util.List;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 // classes needed to initialize map
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
+
 import android.widget.Toast;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import android.support.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -41,7 +49,9 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 // classes needed to add a marker
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+
 import java.util.List;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 // classes needed to initialize map
@@ -51,10 +61,14 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+
 import android.location.Location;
 import android.widget.Toast;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import android.support.annotation.NonNull;
+
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
@@ -72,21 +86,24 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import android.util.Log;
 // classes needed to launch navigation UI
 import android.view.View;
 import android.widget.Button;
+
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 public class MainActivity extends AppCompatActivity implements
-                                                    OnMapReadyCallback,
-                                                    NavigationView.OnNavigationItemSelectedListener,
-                                                    PermissionsListener,
-                                                    LocationEngineListener,
-                                                    MapboxMap.OnMapClickListener{
+        OnMapReadyCallback,
+        NavigationView.OnNavigationItemSelectedListener,
+        PermissionsListener,
+        LocationEngineListener,
+        MapboxMap.OnMapClickListener {
     // variables for adding location layer
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -146,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
             autocompleteFragment = PlaceAutocompleteFragment.newInstance("<access_token>");
 
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_container, autocompleteFragment,TAG);
+            transaction.add(R.id.fragment_container, autocompleteFragment, TAG);
             transaction.commit();
 
         } else {
@@ -247,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapClick(@NonNull LatLng point){
+    public void onMapClick(@NonNull LatLng point) {
         if (destinationMarker != null) {
             mapboxMap.removeMarker(destinationMarker);
         }
@@ -298,7 +315,8 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
     }
-    @SuppressWarnings( {"MissingPermission"})
+
+    @SuppressWarnings({"MissingPermission"})
     private void enableLocationPlugin() {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
@@ -322,6 +340,16 @@ public class MainActivity extends AppCompatActivity implements
         locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
         locationEngine.activate();
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+//               public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                      int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Location lastLocation = locationEngine.getLastLocation();
         if (lastLocation != null) {
             originLocation = lastLocation;
