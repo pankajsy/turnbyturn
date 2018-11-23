@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     private Button button;
-    PlaceAutocompleteFragment autocompleteFragment;
+//    PlaceAutocompleteFragment autocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,32 +158,32 @@ public class MainActivity extends AppCompatActivity implements
         //after mapview is ready
         mapView.getMapAsync(this);
 
-
-        if (savedInstanceState == null) {
-            autocompleteFragment = PlaceAutocompleteFragment.newInstance("<access_token>");
-
-            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_container, autocompleteFragment, TAG);
-            transaction.commit();
-
-        } else {
-            autocompleteFragment = (PlaceAutocompleteFragment)
-                    getSupportFragmentManager().findFragmentByTag(TAG);
-        }
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(CarmenFeature carmenFeature) {
-                Toast.makeText(MainActivity.this,
-                        carmenFeature.text(), Toast.LENGTH_LONG).show();
-                finish();
-            }
-
-            @Override
-            public void onCancel() {
-                finish();
-            }
-        });
+// Location Search Changes
+//        if (savedInstanceState == null) {
+//            autocompleteFragment = PlaceAutocompleteFragment.newInstance("<access_token>");
+//
+//            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.fragment_container, autocompleteFragment, TAG);
+//            transaction.commit();
+//
+//        } else {
+//            autocompleteFragment = (PlaceAutocompleteFragment)
+//                    getSupportFragmentManager().findFragmentByTag(TAG);
+//        }
+//
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(CarmenFeature carmenFeature) {
+//                Toast.makeText(MainActivity.this,
+//                        carmenFeature.text(), Toast.LENGTH_LONG).show();
+//                finish();
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                finish();
+//            }
+//        });
     }
 
     @Override
