@@ -20,7 +20,9 @@
         <!--app:layout_constraintTop_toTopOf="parent" />-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="444dp">
 
         <com.mapbox.mapboxsdk.maps.MapView
             android:id="@+id/mapView"
@@ -28,17 +30,30 @@
             android:layout_height="match_parent"
             mapbox:mapbox_cameraTargetLat="38.9098"
             mapbox:mapbox_cameraTargetLng="-77.0295"
-            mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
-            mapbox:mapbox_cameraZoom="12" />
+            mapbox:mapbox_cameraZoom="12"
+            mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+
         <Button
             android:id="@+id/startButton"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:padding="5px"
+            android:layout_height="wrap_content"
             android:layout_margin="20px"
-            android:text="Start navigation"
             android:background="@color/mapboxGrayLight"
-            android:textColor="@color/mapboxWhite"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:padding="5px"
+            android:text="Start navigation"
+            android:textColor="@color/mapboxWhite" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_location_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/startButton"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="11dp"
+            android:tint="@android:color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@android:drawable/ic_search_category_default" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

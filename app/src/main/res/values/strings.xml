@@ -9,4 +9,5 @@
     <string name="access_token" translatable="false">pk.eyJ1IjoicGFua2FqMjMxIiwiYSI6ImNqbndiZDR2cjAwYmEzd21xd2V0OThzMzgifQ.chWgNqNVzQMBDMMVdjSuhA</string>
     <string name="user_location_permission_explanation">This app needs location permissions in order to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
+    <string name="title_activity_search">SearchActivity</string>
 </resources>
