@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+
         enableLocationPlugin();
         originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
         mapboxMap.addOnMapClickListener(this);
@@ -272,6 +273,9 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         // Add the symbol layer icon to map for future use
+
+        initSearchFab();
+        addUserLocations();
         Bitmap icon = BitmapFactory.decodeResource(
                 MainActivity.this.getResources(), R.drawable.blue_marker_view);
         mapboxMap.addImage(symbolIconId, icon);
