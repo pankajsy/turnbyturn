@@ -1,6 +1,7 @@
 package com.example.psy.turnbyturn;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -29,7 +30,11 @@ import android.support.v7.app.AppCompatActivity;
 // classes needed to initialize map
 import com.google.gson.JsonObject;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.maps.MapView;
 
 import android.widget.Toast;
@@ -148,14 +153,14 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -447,6 +452,34 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+
+// Retrieve selected location's CarmenFeature
+            CarmenFeature selectedCarmenFeature = PlaceAutocomplete.getPlace(data);
+
+// Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above
+            FeatureCollection featureCollection = FeatureCollection.fromFeatures(
+                    new Feature[]{Feature.fromJson(selectedCarmenFeature.toJson())});
+
+// Retrieve and update the source designated for showing a selected location's symbol layer icon
+            GeoJsonSource source = mapboxMap.getSourceAs(geojsonSourceLayerId);
+            if (source != null) {
+                source.setGeoJson(featureCollection);
+            }
+
+// Move map camera to the selected location
+            CameraPosition newCameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
+                            ((Point) selectedCarmenFeature.geometry()).longitude()))
+                    .zoom(14)
+                    .build();
+            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition), 4000);
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();
