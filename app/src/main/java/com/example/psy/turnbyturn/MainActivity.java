@@ -51,6 +51,8 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
+import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
+import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
@@ -138,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationMapRoute navigationMapRoute;
     private Button button;
 //    PlaceAutocompleteFragment autocompleteFragment;
+
+    // Placepicker
+    private static final int REQUEST_CODE = 5678;
 
     //Search
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
@@ -260,7 +265,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-
+        initSearchFab();
+        addUserLocations();
         enableLocationPlugin();
         originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
         mapboxMap.addOnMapClickListener(this);
@@ -279,8 +285,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Add the symbol layer icon to map for future use
 
-        initSearchFab();
-        addUserLocations();
+
         Bitmap icon = BitmapFactory.decodeResource(
                 MainActivity.this.getResources(), R.drawable.blue_marker_view);
         mapboxMap.addImage(symbolIconId, icon);
@@ -335,6 +340,19 @@ public class MainActivity extends AppCompatActivity implements
         SymbolLayer selectedLocationSymbolLayer = new SymbolLayer("SYMBOL_LAYER_ID", geojsonSourceLayerId);
         selectedLocationSymbolLayer.withProperties(PropertyFactory.iconImage(symbolIconId));
         mapboxMap.addLayer(selectedLocationSymbolLayer);
+    }
+    /**
+     * Set up the PlacePickerOptions and startActivityForResult
+     */
+    private void goToPickerActivity() {
+        startActivityForResult(
+                new PlacePicker.IntentBuilder()
+                        .accessToken(getString(R.string.access_token))
+                        .placeOptions(PlacePickerOptions.builder()
+                                .statingCameraPosition(new CameraPosition.Builder()
+                                        .target(new LatLng(40.7544, -73.9862)).zoom(16).build())
+                                .build())
+                        .build(this), REQUEST_CODE);
     }
 
     @Override
