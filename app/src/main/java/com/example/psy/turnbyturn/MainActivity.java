@@ -265,8 +265,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        //Initialize search
         initSearchFab();
         addUserLocations();
+
+
         enableLocationPlugin();
         originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
         mapboxMap.addOnMapClickListener(this);
@@ -297,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements
         setupLayer();
     }
 
+    //Search Place Autocomplete Intent
     private void initSearchFab() {
         FloatingActionButton searchFab = findViewById(R.id.fab_location_search);
         searchFab.setOnClickListener(new View.OnClickListener() {
@@ -341,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements
         selectedLocationSymbolLayer.withProperties(PropertyFactory.iconImage(symbolIconId));
         mapboxMap.addLayer(selectedLocationSymbolLayer);
     }
+
+
     /**
      * Set up the PlacePickerOptions and startActivityForResult
      */

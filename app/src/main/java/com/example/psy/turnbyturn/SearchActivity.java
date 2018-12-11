@@ -74,7 +74,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
 // Add the symbol layer icon to map for future use
         Bitmap icon = BitmapFactory.decodeResource(
-                SearchActivity.this.getResources(), R.drawable.blue_marker_view);
+                SearchActivity.this.getResources(), R.drawable.blue_marker);
         mapboxMap.addImage(symbolIconId, icon);
 
 // Create an empty GeoJSON source using the empty feature collection
