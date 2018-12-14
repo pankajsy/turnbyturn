@@ -266,8 +266,8 @@ public class MainActivity extends AppCompatActivity implements
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         //Initialize search
-        initSearchFab();
-        addUserLocations();
+//        initSearchFab();
+//        addUserLocations();
 
 
         enableLocationPlugin();
@@ -289,15 +289,15 @@ public class MainActivity extends AppCompatActivity implements
         // Add the symbol layer icon to map for future use
 
 
-        Bitmap icon = BitmapFactory.decodeResource(
-                MainActivity.this.getResources(), R.drawable.blue_marker_view);
-        mapboxMap.addImage(symbolIconId, icon);
-
-// Create an empty GeoJSON source using the empty feature collection
-        setUpSource();
-
-// Set up a new symbol layer for displaying the searched location's feature coordinates
-        setupLayer();
+//        Bitmap icon = BitmapFactory.decodeResource(
+//                MainActivity.this.getResources(), R.drawable.blue_marker_view);
+//        mapboxMap.addImage(symbolIconId, icon);
+//
+//// Create an empty GeoJSON source using the empty feature collection
+//        setUpSource();
+//
+//// Set up a new symbol layer for displaying the searched location's feature coordinates
+//        setupLayer();
     }
 
     //Search Place Autocomplete Intent
